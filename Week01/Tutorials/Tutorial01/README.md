@@ -1,12 +1,8 @@
 # Tutorial 1 — Classes, objects, constructors and encapsulation
 
-Source: Notion page Tutorial1.
-
 ## Q1. Classes and Objects
 
 **Explain the difference between a class and an object. Use a Student class as an example.**
-
-Attempt (preserved verbatim):
 
 ```java
 public class Main{
@@ -25,8 +21,6 @@ TODO: The attempt has syntax errors, and two public classes cannot share one Jav
 ## Q2. Constructors
 
 **What is the purpose of a constructor? Explain two differences between a constructor and a regular method.**
-
-Attempt (preserved verbatim):
 
 ```java
 public class Car {
@@ -102,4 +96,3 @@ public void Student(String name) {
 }
 ```
 
-No answer was present in the source page.

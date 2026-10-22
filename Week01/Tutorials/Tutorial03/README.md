@@ -1,7 +1,5 @@
 # Tutorial 3 — References, equality and exceptions
 
-Source: Notion page Tutorial3. All six answer callouts were empty.
-
 ## Q1. Reference Semantics
 
 Trace the code below. Which objects do a and b reference after the last statement?

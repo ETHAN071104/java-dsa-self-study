@@ -1,7 +1,5 @@
 # Lab 1 — Student Management, OOP and debugging
 
-Source: Notion page Lab1.
-
 ## 01 Student Management — Class Design
 
 ### Requirements
@@ -18,7 +16,7 @@ Source: Notion page Lab1.
 - Invalid CGPA values cannot be assigned.
 - The code compiles and runs successfully.
 
-The existing attempted solution is in [Student.java](Student.java). TODO: it calls an undefined setOrUpdateCgpa, does not enforce the CGPA range, and creates three objects without printing their details. Original misspellings and incomplete logic are retained.
+>Answer in Student.java
 
 ## 02 Employee Salary System — Inheritance & Polymorphism
 

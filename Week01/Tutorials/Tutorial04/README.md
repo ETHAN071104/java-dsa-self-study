@@ -1,7 +1,5 @@
 # Tutorial 4 — Big-O and complexity
 
-Source: Notion page Tutorial4. All answer callouts were empty.
-
 ## Q1. Constant and Linear Time
 
 Determine the time complexity and explain why.
