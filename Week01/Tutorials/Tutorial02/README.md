@@ -40,7 +40,7 @@ public class OverloadDemo {
 ===========================================================================================================
 
 For Overriding: 
-##subclass provides its own specific implementation of a method that is already defined in its superclass using the exact same signature
+>>subclass provides its own specific implementation of a method that is already defined in its superclass using the exact same signature
 
 class Animal {
     void makeSound() {
