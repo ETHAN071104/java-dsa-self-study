@@ -1,98 +1,166 @@
-# Tutorial 1 — Classes, objects, constructors and encapsulation
+# Week 01 · Tutorial 01
 
-## Q1. Classes and Objects
+## Classes, objects & validation
 
-**Explain the difference between a class and an object. Use a Student class as an example.**
+---
+
+### 1. Write the declarations and statements
+
+**a.** Declare private fields `name`, `studentId`, and `cgpa` with suitable types.
 
 ```java
-public class Main{
-	puclic static void main(String[] args){
 
-	String name
-	}
-}
 
-public class Student(String name ,{
+```
+
+**b.** Write a constructor for `Book`, which has a private String field `title`. Name the parameter `title`.
+
+```java
+
+
+```
+
+**c.** Write a getter for the Book title.
+
+```java
+
+
+```
+
+**d.** Using `Student(String name, String studentId, double cgpa)` and `getCgpa()`, create two students and print the second student’s CGPA.
+
+```java
+
+
+```
+
+---
+
+### 2. Correct the errors
+
+**a.**
+
+```java
+// Constructor for Book, which has a String field title.
+public void Book(String title) {
+    this.title = title;
 }
 ```
 
-TODO: The attempt has syntax errors, and two public classes cannot share one Java source file. It is preserved here for review.
-
-## Q2. Constructors
-
-**What is the purpose of a constructor? Explain two differences between a constructor and a regular method.**
+**Correction**
 
 ```java
-public class Car {
-    private int fuelLevel;
 
-    public void refuel(int liters) {
-        this.fuelLevel += liters;
-    }
 
-    public int getFuelLevel() {
-        return this.fuelLevel;
-    }
+```
+
+**b.**
+
+```java
+// Getter for a String field title.
+public int getTitle() {
+    return title;
 }
-
-car.refuel(40);
-int remaining = car.getFuelLevel();
 ```
 
-TODO: The snippet defines the Car class but calls an undeclared car variable outside a method; no written explanation was present in the source.
-
-## Q3. Reference Semantics
-
-**Consider the following code. What will be printed, and why?**
+**Correction**
 
 ```java
-Student a = new Student("Alice");
-Student b = a;
-b.name = "Bob";
-System.out.println(a.name);
+
+
 ```
 
-Attempted answer: Bob
+**c.**
+
+```java
+// Reject values outside 0.0–4.0.
+if (value < 0.0 && value > 4.0) {
+    throw new IllegalArgumentException("Invalid CGPA");
+}
+cgpa = value;
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Determine the output
+
+```java
+class Box {
+    int value;
+    Box(int value) { this.value = value; }
+}
+// Inside main:
+Box a = new Box(10);
+Box b = a;
+Box c = new Box(10);
+b.value = 30;
+System.out.println(a.value);
+System.out.println(c.value);
+System.out.println(a == b);
+System.out.println(a == c);
+```
+
+How many objects exist? Draw the references.
+
+**Answer**
 
 ```text
-STACK MEMORY                       HEAP MEMORY
-(Variables / References)               (The Actual Object)
 
-     +---------------+
-  a  |  0x1001       | -----\\
-     +---------------+       \\       +----------------------+
-                              -----> | Student Object       |
-     +---------------+       /       | Address: 0x1001      |
-  b  |  0x1001       | -----/        | name: "Bob"          |
-     +---------------+               +----------------------+
+
 ```
 
-## Q4. Encapsulation
+---
 
-**Why should a bank account's balance usually be private? Describe how deposit() and withdraw() should protect the account's state.**
+### 4. Write an update method
 
-Attempt (preserved verbatim):
+Write `void updateCgpa(double value)` for a class with a private `double cgpa` field. Accept only finite values from 0.0 to 4.0, inclusive. Throw `IllegalArgumentException` otherwise, leaving the old value unchanged.
 
-> To enforce encapsulation and prevent external code from tampering with, corrupting, or directly modifying funds without authorization (e.g., bypassing rules, setting negative balances).
->
-> -Validates that the input is strictly positive ($amount > 0$) to block "negative deposits" that would secretly drain the account.
->
-> -The amount is positive ($amount > 0$).
-> The account has sufficient funds ($balance \\ge amount$), preventing unauthorized overdrafts.
-
-## Q5. Coding
-
-**Implement a Student class with name, studentId, and cgpa. Include a constructor, private fields, and appropriate getters.**
-
-The original Java attempt is in [Student.java](Student.java). TODO: The answer calls getStudentId() and getCgpa() in main, but the implemented getter names are studentId() and cgpa(). The getters also lack the get prefix; the attempt is not corrected.
-
-## Q6. Debugging
-
-**Consider the declaration below. Is it a constructor? What happens when Java compiles this class?**
+**Solution**
 
 ```java
-public void Student(String name) {
-    this.name = name;
-}
+
+
 ```
 
+---
+
+### 5. Write a title-validation method
+
+In Book, write `void rename(String newTitle)`. Reject null and whitespace-only input with `IllegalArgumentException`; otherwise store the trimmed title.
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 6. Complete the test table
+
+Start each test with CGPA 3.0.
+
+| Input | Accept / reject | CGPA afterwards |
+| --- | --- | --- |
+| 0.0 | | |
+| 4.0 | | |
+| -0.1 | | |
+| 4.1 | | |
+| Double.NaN | | |
+
+Write one additional test showing that two independently created students keep separate state.
+
+**Solution**
+
+```java
+
+
+```

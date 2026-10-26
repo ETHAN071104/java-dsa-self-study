@@ -1,110 +1,182 @@
-# Tutorial 2 — Inheritance and polymorphism
+# Week 01 · Tutorial 02
 
-## Q1. Inheritance — 继承
+## Inheritance, polymorphism & exceptions
 
-What problem does inheritance solve? Give one example where inheritance is appropriate and one example where composition would be more suitable.
+---
 
-## Q2. Overloading vs. Overriding
+### 1. Write the declarations and statements
 
-Explain the difference between method overloading and method overriding. Provide one Java example of each.
-===========================================================================================================
-
-For overloading:
-##
-
-class Calculator {
-    ## Version 1: Two integer arguments
-    int add(int a, int b) {
-        return a + b;
-    }
-
-    ## Version 2: Three integer arguments (different number of parameters)
-    int add(int a, int b, int c) {
-        return a + b + c;
-    }
-
-    ## Version 3: Two double arguments (different parameter types)
-    double add(double a, double b) {
-        return a + b;
-    }
-}
-
-public class OverloadDemo {
-    public static void main(String[] args) {
-        Calculator calc = new Calculator();
-        System.out.println(calc.add(2, 3));        // Calls Version 1 -> 5
-        System.out.println(calc.add(2, 3, 4));     // Calls Version 2 -> 9
-        System.out.println(calc.add(2.5, 3.5));    // Calls Version 3 -> 6.0
-    }
-}
-===========================================================================================================
-
-For Overriding: 
->>subclass provides its own specific implementation of a method that is already defined in its superclass using the exact same signature
-
-class Animal {
-    void makeSound() {
-        System.out.println("The animal makes a sound");
-    }
-}
-
-class Dog extends Animal {
-    // Overriding the superclass method
-    @Override
-    void makeSound() {
-        System.out.println("The dog barks");
-    }
-}
-
-public class OverrideDemo {
-    public static void main(String[] args) {
-        Animal myAnimal = new Animal();
-        Animal myDog = new Dog(); // Polymorphic reference
-
-        myAnimal.makeSound(); // Outputs: The animal makes a sound
-        myDog.makeSound();    // Outputs: The dog barks (resolved at runtime)
-    }
-}
-
-===========================================================================================================
-Summary:
-Method overloading means using the same method name with different parameters to perform varied actions ;while method overriding permanently replaces a parent class method's behavior with a new, custom implementation inside a child class.
-
-
-## Q3. Polymorphism
-
-Explain why the following declaration is valid and useful.
-===========================================================================================================
+**a.** Declare an abstract `Ticket` class with an abstract method `double price()`.
 
 ```java
-Animal animal = new Dog();
+
+
 ```
 
-## Q4. Abstract Classes vs. Interfaces
-
-Compare abstract classes and interfaces. Give one situation in which you would choose each.
-===========================================================================================================
-
-## Q5. Code Tracing
-
-What is printed? Explain how Java selects the method implementation.
-===========================================================================================================
+**b.** Declare an interface `Printable` with a method `void print()`.
 
 ```java
-class Animal {
-    void makeSound() { System.out.println("Animal"); }
-}
-class Dog extends Animal {
-    @Override
-    void makeSound() { System.out.println("Dog"); }
-}
-Animal a = new Dog();
-a.makeSound();
+
+
 ```
 
-## Q6. Design
+**c.** Assume `BusTicket` extends Ticket and has a no-argument constructor. Create a BusTicket through a Ticket reference and print its price.
 
-Design an abstract Shape class with an area() method. Implement Circle and Rectangle so that both can be processed through a common Shape reference.
-===========================================================================================================
+```java
 
-No answers were present in the source page.
+
+```
+
+**d.** Declare an empty `List<Ticket>` backed by ArrayList. Write a loop that prints each ticket’s price. Include imports.
+
+```java
+
+
+```
+
+---
+
+### 2. Correct the errors
+
+**a.**
+
+```java
+// Ticket is abstract; BusTicket is concrete with a no-argument constructor.
+Ticket ticket = new Ticket();
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Override the parent's double price() method.
+@Override
+int price(int discount) { return 10; }
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+interface Printable { void print(); }
+class Receipt implements Printable {
+    void print() { System.out.println("Paid"); }
+}
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Determine the output
+
+```java
+class Parent {
+    String label() { return "parent"; }
+    String label(String suffix) { return "parent-" + suffix; }
+}
+class Child extends Parent {
+    @Override
+    String label() { return "child"; }
+}
+// Inside main:
+Parent p = new Child();
+System.out.println(p.label());
+System.out.println(p.label("x"));
+```
+
+Identify the overriding and overloading.
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 4. Complete the constructor
+
+```java
+abstract class Machine {
+    private final String code;
+    Machine(String code) { this.code = code; }
+}
+class Printer extends Machine {
+    Printer(String code) {
+        // Complete this constructor.
+    }
+}
+```
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 5. Write input-validation code
+
+**a.** Write `static int checkedHours(int hours)`. Return hours when it is from 0 to 24, inclusive; otherwise throw IllegalArgumentException.
+
+```java
+
+
+```
+
+**b.** Call checkedHours(-1) inside try/catch. Print `Invalid hours` on failure, then print `Program continues`.
+
+```java
+
+
+```
+
+**c.** Parse `"abc"` with Integer.parseInt. Catch NumberFormatException and print a friendly error message.
+
+```java
+
+
+```
+
+---
+
+### 6. Classify the errors
+
+Classify each as a compile-time error, runtime exception, or logic error.
+
+| Case | Classification |
+| --- | --- |
+| Instantiate an abstract class | |
+| Parse `"abc"` as an integer | |
+| Accept -5 working hours | |
+| Divide an integer by a variable containing zero | |
+
+Why can one `List<Employee>` loop call different salary calculations without checking each employee’s type?
+
+**Answer**
+
+```text
+
+
+```

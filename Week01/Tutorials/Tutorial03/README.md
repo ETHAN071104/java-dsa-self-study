@@ -1,40 +1,161 @@
-# Tutorial 3 — References, equality and exceptions
+# Week 01 · Tutorial 03
 
-## Q1. Reference Semantics
+## Equality, sets & maps
 
-Trace the code below. Which objects do a and b reference after the last statement?
+---
 
-```java
-Student a = new Student("Alice");
-Student b = a;
-a = new Student("Bob");
-```
+### 1. Write the statements
 
-## Q2. == vs. equals()
-
-What is the output of this code? Explain the difference between reference equality and logical equality.
+**a.** Declare a set of integers and add 7 twice. Print its size and whether it contains 7.
 
 ```java
-String x = new String("Java");
-String y = new String("Java");
-System.out.println(x == y);
-System.out.println(x.equals(y));
+
+
 ```
 
-## Q3. equals() and hashCode()
+**b.** Declare a map from student IDs to integer indices. Store `"S8" → 2`, then retrieve that index.
 
-Suppose two Student objects are considered equal when their studentId values match. Why should their hashCode() implementations use a consistent identity rule?
+```java
 
-## Q4. HashSet
 
-What problems can occur if two objects return true from equals() but have different hash codes? Explain how this affects a HashSet.
+```
 
-## Q5. Exceptions
+**c.** Increase the count for `"java"` by one in a `Map<String, Integer> counts`. Handle an absent key.
 
-Explain how ArrayIndexOutOfBoundsException and NullPointerException can occur. Describe one way to prevent each problem.
+```java
 
-## Q6. Debugging
 
-A withdraw(-100) operation compiles and runs but incorrectly increases the account balance. Identify the bug and propose a fix using input validation and appropriate testing.
+```
 
-No answers were present.
+---
+
+### 2. Correct the errors
+
+**a.**
+
+```java
+Set<int> scores = new HashSet<>();
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Compare string contents.
+String left = new String("S8");
+String right = new String("S8");
+System.out.println(left == right);
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+// "blue" may be absent from the count map.
+counts.put("blue", counts.get("blue") + 1);
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Determine the output
+
+```java
+String a = new String("cat");
+String b = new String("cat");
+Set<String> words = new HashSet<>();
+System.out.println(a == b);
+System.out.println(a.equals(b));
+System.out.println(words.add(a));
+System.out.println(words.add(b));
+System.out.println(words.size());
+```
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 4. Complete the identity methods
+
+Two Cards are equal when their IDs match, including two null IDs. Complete equals and hashCode.
+
+```java
+final class Card {
+    private final String id;
+    Card(String id) { this.id = id; }
+
+    @Override
+    public boolean equals(Object other) {
+        // Complete this method.
+    }
+
+    @Override
+    public int hashCode() {
+        // Complete this method.
+    }
+}
+```
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 5. Count repeated occurrences
+
+For `int[] values = {4, 1, 4, 4, 2};`, use a set to count occurrences that repeat an earlier value. Print the count. Count repeated occurrences, not distinct duplicated values.
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 6. Trace a map of earlier indices
+
+For `{5, 2, 5}`, store value → latest index. Use target 7.
+
+| Index | Value | Needed partner (`target - value`) | Map before insertion | Map after insertion |
+| --- | --- | --- | --- | --- |
+| 0 | 5 | | | |
+| 1 | 2 | | | |
+| 2 | 5 | | | |
+
+At index 1, write the map lookup for an earlier partner. Why should lookup happen before insertion when the two indices must be different?
+
+**Solution**
+
+```java
+
+
+```

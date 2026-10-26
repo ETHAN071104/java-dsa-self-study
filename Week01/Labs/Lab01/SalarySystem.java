@@ -101,12 +101,15 @@ public class SalarySystem {
         System.out.println("=======================================");
     }
     public static void main(String[] args) {
-        // Pass 4 arguments now: id, name, base salary, bonus rate
-        FullTimeEmployee ft = new FullTimeEmployee("FT-101", "Alice", 5000.00, 0.10);
-        PartTimeEmployee pt = new PartTimeEmployee("PT-201", "Bob", 25.00, 80);
+// Store both types in the same List<Employee>
+        List<Employee> staffList = new ArrayList<>();
 
-        System.out.println(ft.getName() + " Bonus: $" + ft.calculateBonus());
-        System.out.println(ft.getName() + " Total Salary: $" + ft.calculateSalary());
-        System.out.println(pt.getName() + " Total Salary: $" + pt.calculateSalary());
+        staffList.add(new FullTimeEmployee("FT-101", "Alice", 5000.00, 0.10));
+        staffList.add(new FullTimeEmployee("FT-102", "Charlie", 6000.00, 0.15));
+        staffList.add(new PartTimeEmployee("PT-201", "Bob", 25.00, 80));
+        staffList.add(new PartTimeEmployee("PT-202", "Diana", 30.00, 60));
+
+        // Process all salaries through the single common method
+        processPayroll(staffList);
     }
 }
