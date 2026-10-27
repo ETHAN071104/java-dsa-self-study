@@ -1,58 +1,170 @@
-# Week 3 · Tutorial 01 — Run a Service Desk
+# Week 03 · Tutorial 01
 
-**Source:** supplementary practice based on the Week 3 roadmap. The individual Week 3 Notion page contains no lesson content; this is not official WIX1002 work.
+## Stacks, queues & brackets
 
-## Practical challenge
+**Read first:** [requirement.md](requirement.md)
 
-Build a small service desk that processes customer requests in arrival order and supports undoing the most recent administrative action. It must accept a request, process the next waiting request, undo the newest action, and report whether each structure has work remaining.
+---
 
-**Check:** requests are handled FIFO, undo is LIFO, an empty desk does not crash, and each structure reports its own pending state.
+### 1. Write the statements
 
-## Implementation milestones
+**a.** Declare a Deque<Character> backed by ArrayDeque. Push `'('`, then `'['`.
 
-1. Run [TaskFirstExample.java](TaskFirstExample.java) and write the queue contents after each removal.
-2. Create a `Queue<String>` for request names. Add three names, process one at a time, and display the one being handled.
-3. Define the empty-queue behavior before removing. Choose an operation whose return behavior fits that contract.
-4. Add a separate `Deque<String>` for the most recent undo actions. Push and undo actions from the same end.
-5. Trace the same inputs with FIFO and LIFO rules and compare which request/action is returned first.
-6. After the code, compare an array-backed list and a linked list for index access, insertion at a known position, and extra per-element storage. State when the position must first be found.
+```java
 
-## Concept discovery
 
-**Expected output for the worked example:**
-
-```text
-Processing first
-Processing second
-Processing third
-Desk empty: true
 ```
 
-**Concept note (Chinese):** 队列按先进先出处理，适合等待中的请求；栈按后进先出处理，适合撤销最近操作。`Deque` 可以从两端添加或移除，也能明确表达栈和队列行为。先定义空结构时的行为，再选择 `remove()`、`poll()` 等操作，避免空取出时出现未处理异常。
+**b.** Print the top without removing it, then print the stack size.
 
-## Apply and verify
+```java
 
-- Process three requests in arrival order.
-- Test no requests, one request, and several requests.
-- Add and undo two actions; confirm the newest action is undone first.
-- State the time and extra space as the number of queued or stacked items grows.
-- Complete this comparison table from your own traces and structure assumptions: indexed read, add/remove at a known end, and extra storage for an array-backed list versus a linked list; stack versus queue removal order.
 
-## Explain after coding
+```
 
-1. What makes the service desk a queue rather than a stack?
-2. Why can a deque represent both patterns?
-3. What behavior does your empty-removal operation provide?
+**c.** Remove the top only when the stack is nonempty.
 
-## Independent transfer
+```java
 
-Build a print queue that accepts document names and prints them in arrival order. Add a separate “undo last added document” action using a stack; do not use one structure for both behaviors.
 
-**Acceptance criteria:** FIFO printing; LIFO undo; explicit empty behavior; tests for empty, one-item, and multi-item states.
+```
 
-## Completion checklist
+**d.** Declare a Queue<String>, add `"A"` then `"B"`, and remove one item in FIFO order. Include imports.
 
-- [ ] I implemented and tested FIFO processing.
-- [ ] I used a stack for last-action-first undo.
-- [ ] I can explain how a deque supports both ends.
-- [ ] I handled empty structures deliberately.
+```java
+
+
+```
+
+---
+
+### 2. Correct the errors
+
+**a.**
+
+```java
+Deque<char> stack = new ArrayDeque<>();
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Print "empty" if the character stack is empty.
+char top = stack.peek();
+System.out.println(top);
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+// Process requests FIFO.
+Deque<String> requests = new ArrayDeque<>();
+requests.push("first");
+requests.push("second");
+System.out.println(requests.pop());
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Determine the output
+
+```java
+Deque<Integer> stack = new ArrayDeque<>();
+Queue<Integer> queue = new ArrayDeque<>();
+for (int value : new int[]{2, 4, 6}) {
+    stack.push(value);
+    queue.offer(value);
+}
+System.out.println(stack.pop());
+System.out.println(queue.poll());
+System.out.println(stack.peek());
+System.out.println(queue.peek());
+```
+
+Show the remaining stack from top to bottom and queue from front to back.
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 4. Trace bracket matching
+
+Trace `"{[]}"`, `"([)]"`, `")("`, and `"(("` separately. Put the stack top on the left. Stop at the first rejection.
+
+| Character | Stack before | Action | Stack after |
+| --- | --- | --- | --- |
+| | | | |
+
+Which invalid input has equal numbers of opening and closing brackets?
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 5. Write a matching-pair method
+
+Write `static boolean matches(char opener, char closer)`. Return true only for `()`, `[]`, and `{}`.
+
+Test all three valid pairs, `(]`, and `)(`.
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 6. Choose checks and test cases
+
+For a closing bracket, put these actions in the correct order: compare types; reject an empty stack; pop the opener. What must be checked after the entire string?
+
+| Case | Example input | Expected result |
+| --- | --- | --- |
+| Empty string | | |
+| Unmatched closer | | |
+| Leftover opener | | |
+| Wrong bracket type | | |
+| Wrong nesting | | |
+| Valid nesting | | |
+
+State time and worst-case auxiliary space for a stack-based scan of n characters.
+
+**Answer**
+
+```text
+
+
+```

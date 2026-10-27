@@ -1,53 +1,177 @@
-# Week 3 · Tutorial 02 — Validate Nested Delimiters
+# Week 03 · Tutorial 02
 
-**Source:** supplementary practice based on the Week 3 roadmap; the Week 3 Notion lesson page is empty.
+## Linked nodes & reversal
 
-## Practical challenge
+**Read first:** [requirement.md](requirement.md)
 
-Write a method that checks whether `()`, `[]`, and `{}` are properly nested in a string. Every closing delimiter must match the most recent unmatched opening delimiter.
+---
 
-**Expected behavior:** `{[()]}` is valid; `([)]`, `)(`, and `{[}` are invalid; the empty string is valid.
+### 1. Create and connect nodes
 
-## Implementation milestones
+Use this Node type for all questions.
 
-1. Before coding, write a stack trace for `{[()]}` and `([)]`.
-2. Scan characters from left to right. Push opening delimiters onto a stack.
-3. When a closing delimiter appears, handle an empty stack, remove the most recent opener, and compare the pair.
-4. After scanning, accept only if no unmatched opener remains.
-5. Add a helper that maps each closing delimiter to its matching opener, or use a small conditional. Keep the input unchanged.
+```java
+static class Node {
+    int value;
+    Node next;
+    Node(int value) { this.value = value; }
+}
+```
 
-## Concept discovery
+**a.** Create nodes a, b, and c containing 10, 20, and 30. Link a → b → c → null.
 
-**Concept note (Chinese):** 嵌套结构必须先关闭最近打开的符号，因此需要后进先出的访问方式。栈顶记录当前最内层的未匹配符号。仅检查最后栈是否为空不够：还必须处理“没有可匹配的开括号”以及括号类型不相同的情况。
+```java
 
-Use this trace table in your notes; complete it yourself before writing the method:
 
-| Character read | Stack before | Action | Stack after |
-| --- | --- | --- | --- |
-| `{` | empty | push opener | your trace |
-| `[` | your trace | push opener | your trace |
-| `]` | your trace | compare with top | your trace |
+```
 
-## Apply and verify
+**b.** Set head to a. Print the second value through head.
 
-Test each required string plus `((`, `]`, `[]{}()`, and `[{()}]`. Add a long valid string and an immediate mismatch. Record which condition each test exercises.
+```java
 
-## Explain after coding
 
-1. Why must a closer match the top opener rather than any opener in the stack?
-2. Which invalid input can cause an attempted pop from an empty stack?
-3. Why does a non-empty final stack mean the input is incomplete?
-4. What is the time and auxiliary-space complexity in terms of string length `n`?
+```
 
-## Independent transfer
+**c.** Insert a new node containing 5 before head, then update head.
 
-Validate a string containing only `<` and `>` delimiters. Add a maximum nesting depth rule and reject any string that exceeds it.
+```java
 
-**Acceptance criteria:** handles empty input, unmatched openers/closers, proper nesting, and the depth limit; does not use a counter alone to accept crossed delimiters.
 
-## Completion checklist
+```
 
-- [ ] I implemented a stack-based scan.
-- [ ] I tested empty, mismatched, incomplete, and valid nesting.
-- [ ] I can state the invariant after each character.
-- [ ] I can justify O(n) time and worst-case O(n) extra space.
+**d.** Declare an empty list and check for null before reading its value.
+
+```java
+
+
+```
+
+---
+
+### 2. Correct the errors
+
+**a.**
+
+```java
+// Print every value, including the last; handle an empty list.
+Node cursor = head;
+while (cursor.next != null) {
+    System.out.println(cursor.value);
+    cursor = cursor.next;
+}
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Traverse while preserving this local head reference.
+while (head != null) {
+    System.out.println(head.value);
+    head = head.next;
+}
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+// Reverse one link without losing the original next node.
+current.next = previous;
+Node savedNext = current.next;
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Trace the references
+
+Start with `a(1) → b(2) → c(3) → null` and head=a.
+
+```java
+Node p = head;
+Node q = p;
+p = p.next;
+q.next = p.next;
+```
+
+Draw all final links and the references head, p, and q. Which node is skipped when traversing from head?
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 4. Complete one reversal step
+
+Start with previous=null, current=a, and `a(1) → b(2) → c(3) → null`.
+
+```java
+Node savedNext = /* complete */;
+current.next = /* complete */;
+previous = /* complete */;
+current = /* complete */;
+```
+
+Repeat the step on paper until current is null. Draw the links after each round and identify the new head.
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 5. Write a traversal method
+
+Write `static int countNodes(Node head)` for an acyclic list. Return zero for null and leave all links unchanged. Test lists of lengths 0, 1, and 3.
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 6. Check node identity and complexity
+
+**a.** Describe checks proving that reversal returns the original nodes in reverse order, rather than replacement nodes containing copied values.
+
+**b.** What should the original head’s next reference become?
+
+**c.** State time and auxiliary space for traversal and iterative reversal.
+
+**d.** Why is arbitrary indexed access not O(1)? What happens if countNodes follows a cycle?
+
+**Answer**
+
+```text
+
+
+```

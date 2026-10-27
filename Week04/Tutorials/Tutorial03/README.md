@@ -1,54 +1,166 @@
-# Week 4 · Tutorial 03 — Traverse a Tree Recursively
+# Week 04 · Tutorial 03
 
-**Source:** supplementary practice based on the 19-week roadmap. The individual Week 4 Notion page is empty.
+## Recursion & binary trees
 
-## Practical challenge
+**Read first:** [requirement.md](requirement.md)
 
-Given a binary tree, report its maximum depth and the values in preorder. A null tree has depth `0` and an empty preorder result.
+---
 
-Use this tree to test: root `2`, left child `1`, right child `3`.
+### 1. Build a tree
 
-**Constraints:** use the provided `Node` structure in a scratch file; do not use a global variable to accumulate the answer.
+Use this Node type for all tree questions. Trees are acyclic with no shared child nodes.
 
-## Implementation milestones
+```java
+static class Node {
+    int value;
+    Node left, right;
+    Node(int value) { this.value = value; }
+}
+```
 
-1. Draw the tree and write the expected preorder before coding.
-2. Define the base case for a null node.
-3. For depth, compute the left and right subtree depths, then combine them with the current node.
-4. For preorder, process the current node before its left and right subtrees.
-5. Add a one-sided tree and trace each call down to the base case and each return back up.
-6. Compare selection sort, insertion sort, and merge sort by worst-case time and auxiliary space using the descriptions from the tutorial. Do not implement a second sort unless it helps you verify a claim.
+**a.** Declare an empty tree.
 
-## Concept discovery
+```java
 
-**Concept note (Chinese):** 递归函数把当前节点的问题拆成左右子树的同类问题。空节点是停止递归的基例；每次调用都必须朝更小的子树前进。前序遍历先处理当前节点，再访问左右子树。调用过程占用调用栈，单链树会产生较深的递归，因此分析额外空间时要包括最大调用深度。
 
-Draw calls in the order they begin and returns in reverse order. For a tree with a root and two children, mark the point where each node is emitted.
+```
 
-## Apply and verify
+**b.** Create a root containing 6, with left child 2 and right child 9.
 
-- Test null, one node, a balanced three-node tree, and a left- or right-skewed tree.
-- Record preorder and depth for each tree before executing.
-- Add inorder or postorder traversal and state when the root is emitted.
-- Compare recursive traversal's call-stack cost with an iterative traversal using an explicit stack.
-- State best/worst time for insertion sort and worst-case time/extra space for merge sort; use the standard algorithm assumptions taught in class.
+```java
 
-## Explain after coding
 
-1. What is the base case, and what makes each recursive call progress?
-2. Why does preorder produce a different order from postorder?
-3. What is the maximum call-stack depth for a one-sided tree of `n` nodes?
-4. Why can insertion sort be useful on nearly sorted input despite its quadratic worst case?
+```
 
-## Independent transfer
+**c.** Add a node containing 4 as the right child of node 2.
 
-Write a method that counts the number of nodes in a binary tree. Handle null and one-node trees, then test a balanced tree and a one-sided tree. Explain time and call-stack space.
+```java
 
-**Acceptance criteria:** correct counts for all shapes; null base case; finite recursion; time and stack-space analysis.
 
-## Completion checklist
+```
 
-- [ ] I implemented recursive depth and preorder traversal.
-- [ ] I handled null and one-sided trees.
-- [ ] I traced calls and returns and identified stack usage.
-- [ ] I compared sorting complexity using defined algorithm assumptions.
+**d.** Write a condition identifying a non-null leaf.
+
+```java
+
+
+```
+
+---
+
+### 2. Correct the recursive errors
+
+**a.**
+
+```java
+// n is nonnegative.
+static int countdown(int n) {
+    if (n == 0) return 0;
+    return 1 + countdown(n);
+}
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Handle empty subtrees safely.
+if (root.left == null && root.right == null) return 1;
+if (root == null) return 0;
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+// Depth counts nodes: null has depth 0, a leaf has depth 1.
+return Math.max(leftDepth, rightDepth);
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Trace calls and traversal
+
+For this tree, write preorder and the depth of each non-null subtree. Depth counts nodes. Draw the depth-method calls for the subtree rooted at 2, including null calls and return values.
+
+```text
+6
+├── left: 2
+│   └── right: 4
+└── right: 9
+```
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 4. Arrange the preorder operations
+
+Write `static void collect(Node node, List<Integer> result)` using these actions in the correct order: recurse right; return if null; append node.value; recurse left. Use the same result list for both child calls.
+
+What output would the Q3 tree give if append happened between the child calls, or after both calls?
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 5. Write a recursive node counter
+
+Write `static int countNodes(Node root)` without a global counter. Return zero for null. Test null, a leaf, and the Q3 tree.
+
+How does combining child counts differ from combining child depths?
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 6. Complete the cases and complexity
+
+| Tree | Depth | Preorder |
+| --- | --- | --- |
+| null | | |
+| Leaf 8 | | |
+| 8 → left 5 → left 1 | | |
+
+State time, call-stack space, and result-list space for preorder using one shared list. Compare height h for a balanced n-node tree and a chain. State time and stack space for maxDepth.
+
+**Answer**
+
+```text
+
+
+```

@@ -1,47 +1,173 @@
-# Week 3 · Tutorial 04 — Visit a Graph with BFS
+# Week 03 · Tutorial 04
 
-**Source:** supplementary practice based on the Week 3 roadmap; the individual Week 3 Notion lesson page has no content.
+## Graphs & breadth-first search
 
-## Practical challenge
+**Read first:** [requirement.md](requirement.md)
 
-Given a directed graph and a starting vertex, print each reachable vertex once in breadth-first order. Process neighbors in the order listed.
+---
 
-Use this graph: `0: [1, 2]`, `1: [2]`, `2: [3]`, `3: [1]`. Start at `0`. Vertex `4` exists but is disconnected.
+### 1. Write the declarations and statements
 
-**Check:** output each reachable vertex once; never enqueue a vertex twice; do not visit the disconnected vertex from this start.
+Use `List<List<Integer>> adjacency`: index v is a vertex and adjacency.get(v) contains its outgoing neighbors. Assume non-null lists and valid neighbor indices.
 
-## Implementation milestones
+**a.** Create an integer queue and a boolean visited array with one entry per vertex.
 
-1. Trace the queue and visited set by hand before coding. Mark a vertex visited when it is enqueued.
-2. Store each vertex's neighbors in an adjacency list.
-3. Enqueue the start vertex, then repeatedly remove the front and inspect its neighbors.
-4. Enqueue only unseen neighbors. Print or collect a vertex when it is removed.
-5. Test a self-loop, a cycle, an isolated start, a disconnected vertex, and an empty graph. Define what an invalid start does.
+```java
 
-## Concept discovery
 
-**Concept note (Chinese):** BFS 使用队列逐层处理“前沿”。顶点入队时就标记访问，可以避免多个邻居重复加入。邻接表让算法只检查实际存在的边；遍历所有可达顶点和相关边的时间为 O(V + E)，队列与访问标记最多占 O(V) 额外空间。
+```
 
-## Apply and verify
+**b.** Reject an invalid start index with IllegalArgumentException.
 
-For the supplied graph, write the expected order before running your program. Add a second edge order and show how it changes which same-level vertex is visited first. Confirm that every vertex is emitted at most once.
+```java
 
-## Explain after coding
 
-1. Why is the queue FIFO in breadth-first search?
-2. Why is the visited mark set when a vertex is enqueued rather than later?
-3. Which vertices and edges are counted in O(V + E)?
-4. How would a stack change the traversal behavior?
+```
 
-## Independent transfer
+**c.** Mark a valid start as visited and enqueue it.
 
-Model a small campus map as rooms and one-way corridors. From a chosen room, report all reachable rooms by number of steps, keeping each room once. Use only the graph and queue techniques from this tutorial.
+```java
 
-**Acceptance criteria:** correct reachable set and level order; start and disconnected cases handled; neighbor order is documented; time and auxiliary space are explained.
 
-## Completion checklist
+```
 
-- [ ] I implemented BFS using a queue and visited set.
-- [ ] I tested cycles, repeated edges, isolated vertices, and disconnection.
-- [ ] I can explain the role of the adjacency list and FIFO order.
-- [ ] I stated O(V + E) time and O(V) auxiliary space.
+**d.** Print all outgoing neighbors of vertex v.
+
+```java
+
+
+```
+
+---
+
+### 2. Correct the errors
+
+**a.**
+
+```java
+// adjacency is a List<List<Integer>>.
+int vertices = adjacency.length;
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Prevent a waiting vertex from being added again.
+if (!visited[neighbor]) {
+    queue.offer(neighbor);
+}
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+// Use FIFO order. frontier is a Deque<Integer>.
+frontier.push(start);
+int vertex = frontier.pop();
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Trace BFS
+
+Start at 0. Mark vertices when enqueued. Process neighbors in the listed order.
+
+| Vertex | Outgoing neighbors |
+| --- | --- |
+| 0 | 1, 2 |
+| 1 | 3 |
+| 2 | 3 |
+| 3 | 1 |
+| 4 | none |
+
+| Removed vertex | Newly enqueued | Queue afterwards | Output so far |
+| --- | --- | --- | --- |
+| 0 | | | |
+
+Continue until the queue is empty. Repeat the output order with 0’s neighbors reversed to `[2,1]`.
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 4. Complete the neighbor loop
+
+A vertex has just been removed from the queue and recorded in the output.
+
+```java
+for (int neighbor : adjacency.get(vertex)) {
+    if (/* condition */) {
+        // Mark and enqueue the neighbor.
+    }
+}
+```
+
+What happens for a self-loop or repeated edge?
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 5. Count outgoing edges
+
+Write `static int outgoingEdgeCount(List<List<Integer>> adjacency)`. Sum the sizes of the neighbor lists without changing them. Count self-loops and repeated entries separately. Test the graph in Q3 and a single vertex with no edges.
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 6. Check boundaries and complexity
+
+For the graph in Q3, complete the table.
+
+| Case | Output / exception |
+| --- | --- |
+| Start at 4 | |
+| Start at -1 | |
+| Start at 5 | |
+| Empty graph, start at 0 | |
+
+State time and space in terms of V vertices and E adjacency entries. Include visited-array initialization, the queue, and the returned list.
+
+**Answer**
+
+```text
+
+
+```

@@ -1,52 +1,165 @@
-# Week 3 · Tutorial 03 — Implement and Inspect a Linked List
+# Week 03 · Tutorial 03
 
-**Source:** supplementary practice based on the Week 3 roadmap; the individual Week 3 Notion page is empty.
+## Fast & slow pointers
 
-## Practical challenge
+**Read first:** [requirement.md](requirement.md)
 
-Create a singly linked list of integers. Append values, print them in order, reverse the links in place, and find the middle node. The list must support an empty head and a one-node list.
+---
 
-**Constraints:** use a `Node` class with a value and `next` reference; do not copy values into an array to reverse the list.
+### 1. Write the pointer statements
 
-## Implementation milestones
+Assume `Node` has fields `int value` and `Node next`.
 
-1. Define the node and manually connect `1 → 2 → 3 → null`.
-2. Traverse with a cursor and print each value. Keep the `head` reference available to the caller.
-3. Implement append by walking to the final node; test empty and non-empty lists.
-4. Reverse the links iteratively. Before changing `current.next`, save the reference to the unprocessed suffix. Update `previous`, `current`, and the saved next reference one step at a time.
-5. Find the middle with slow/fast references. State which middle is returned for even-length lists.
-6. Draw a cyclic list and trace slow/fast movement until they meet or a pointer reaches `null`.
+**a.** Initialize slow and fast to head.
 
-## Concept discovery
+```java
 
-**Concept note (Chinese):** 单向链表的每个节点只知道下一个节点，访问第 `i` 个位置必须从头沿链接前进。反转时若先改写 `current.next`，可能失去尚未处理的后缀，所以要先保存下一节点。快慢指针每轮分别前进一格和两格，可定位中点；若存在环，两者最终会在环内相遇。空指针检查必须发生在读取节点字段之前。
 
-For one reversal iteration, draw three references: `previous`, `current`, and `nextNode`. Label which nodes are already reversed and which remain unprocessed. Do not begin with a complete method copied from elsewhere.
+```
 
-## Apply and verify
+**b.** Write a short-circuit condition that allows fast to advance two links safely.
 
-- Traverse empty, one-node, and three-node lists.
-- Reverse `1 → 2 → 3 → null`, then reverse the result again.
-- Find the middle of odd- and even-length lists; document the convention.
-- Test an acyclic one-node list and a cycle where the tail points to the second node.
-- Explain time and auxiliary space for traversal, reversal, middle search, and cycle detection.
+```java
 
-## Explain after coding
 
-1. Why must the caller's original head not be advanced during a traversal?
-2. Which reference preserves the unprocessed suffix during reversal?
-3. What does the chosen loop condition return for an even number of nodes?
-4. Why compare node references rather than node values during cycle detection?
+```
 
-## Independent transfer
+**c.** Advance slow by one link and fast by two.
 
-Given a linked list of sensor readings, remove the first node containing a target value and return the updated head. Handle removal at the head, in the middle, when absent, and on an empty list.
+```java
 
-**Acceptance criteria:** links remain connected; head changes only when required; all boundary cases are tested; no array conversion is used.
 
-## Completion checklist
+```
 
-- [ ] I traversed without losing the head.
-- [ ] I reversed links in place and preserved the unprocessed nodes.
-- [ ] I tested fast/slow behavior on odd and even lengths.
-- [ ] I traced cycle detection using node references.
+**d.** Check whether slow and fast refer to the same node.
+
+```java
+
+
+```
+
+---
+
+### 2. Correct the errors
+
+**a.**
+
+```java
+while (fast.next != null && fast != null) {
+    slow = slow.next;
+    fast = fast.next.next;
+}
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Detect the same node, not equal values.
+if (slow.value == fast.value) return true;
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+// Beginning of cycle detection.
+Node slow = head;
+Node fast = head;
+if (slow == fast) return true;
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Trace the second middle
+
+Start both pointers at head. While fast and fast.next are non-null, advance slow once and fast twice. Name nodes A, B, C, …
+
+| Length | Pointer states after each round | Returned slow node |
+| --- | --- | --- |
+| 0 | | |
+| 1 | | |
+| 2 | | |
+| 3 | | |
+| 4 | | |
+| 5 | | |
+
+---
+
+### 4. Trace a cycle
+
+For `A → B → C → D → B`, start slow and fast at A. Advance slow once and fast twice per round; compare after moving.
+
+| Round | slow | fast | Same node? |
+| --- | --- | --- | --- |
+| 1 | | | |
+| 2 | | | |
+| 3 | | | |
+
+Repeat for a one-node self-cycle `X.next = X`.
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 5. Build test lists
+
+**a.** Using Node(int value), create two different nodes containing 5 and link them without a cycle. Print their reference equality and value equality.
+
+```java
+
+
+```
+
+**b.** Create three nodes and link the tail back to the second node. Keep a reference to each node.
+
+```java
+
+
+```
+
+---
+
+### 6. Complete the boundary tests
+
+| Input | Has cycle? |
+| --- | --- |
+| null | |
+| One node ending at null | |
+| One self-cycle | |
+| Two equal-valued nodes ending at null | |
+| Tail linked to head | |
+| Tail linked to an interior node | |
+
+Why should a middle-node test compare references rather than just values? State time and auxiliary space for middle finding and fast/slow cycle detection. Compare with storing visited nodes in a set.
+
+**Answer**
+
+```text
+
+
+```

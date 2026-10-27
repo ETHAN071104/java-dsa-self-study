@@ -1,58 +1,168 @@
-# Week 2 · Tutorial 01 — Keep a Student Roster
+# Week 02 · Tutorial 01
 
-**Source:** redesigned supplementary practice from the Week 2 roadmap. The Week 2 Notion page is blank; no lesson or attempt was available to migrate. This is not official WIX1002 coursework.
+## Lists & input handling
 
-## Practical challenge
+**Read first:** [requirement.md](requirement.md)
 
-Extend a student-record program to keep an ordered roster. Add a student, print every student in arrival order, display the record at a requested position, and remove all students matching a stated condition by using an iterator.
+---
 
-**Constraints:** use `List<Student>` and `ArrayList<Student>`; keep duplicate IDs for this first version so that storage behavior is visible. Do not implement ID lookup yet.
+### 1. Write the statements
 
-**Check:** insertion order is retained, indexed access returns the expected record, matching records are removed without skipping adjacent matches, and an empty roster prints no records without an index error.
+**a.** Create a List<String> backed by ArrayList. Add `"oak"`, `"pine"`, and `"oak"` in order.
 
-## Implementation milestones
+```java
 
-1. Run [TaskFirstExample.java](TaskFirstExample.java), then change the names and print the value at index `1`.
-2. In a scratch file, adapt the example's `Student` class to include the fields from your Week 1 record and store the objects in `ArrayList<Student>`.
-3. Add a method that prints every record using an enhanced for loop.
-4. Use an `Iterator<Student>` to remove a student that meets a simple condition. Do not structurally modify an `ArrayList` from inside a for-each loop.
-5. Run the same roster operations with `LinkedList<Student>` as the implementation of `List<Student>`. Compare indexed read, sequential traversal, and insertion/removal at a known end.
 
-## Concept discovery
-
-**Expected output for the worked example:**
-
-```text
-Ari (A12)
-Mina (B07)
-Ari (A12)
-At index 1: Mina (B07)
 ```
 
-**Concept note (Chinese):** `ArrayList` 保留插入顺序，适合按索引读取；插入中间元素可能需要移动后续元素。`LinkedList` 的索引读取需要沿节点逐个前进，但已知节点附近的链接调整很直接。泛型 `List<Student>` 让编译器检查元素类型。遍历期间删除元素时，使用迭代器自身的 `remove()`，避免集合结构和迭代器状态不一致。
+**b.** Print the second element and the list size.
 
-## Apply and verify
+```java
 
-- Add three students and confirm iteration order matches insertion order.
-- Read the first, middle, and last valid index. Define how your method handles an invalid index.
-- Remove one matching record through the iterator. Test no match and all records matching.
-- Compare the list before and after removal. State which operations depend on an index and which depend on traversal.
 
-## Explain after coding
+```
 
-1. Why did `List<Student>` reject a `String` at compile time?
-2. What does indexed access cost on an `ArrayList` versus a `LinkedList`?
-3. Why is iterator removal safer than `list.remove(...)` inside a for-each loop?
+**c.** Replace the first element with `"elm"`, then print every element using a for-each loop.
 
-## Independent transfer
+```java
 
-Maintain an ordered playlist of song titles. Add a song, show the song at a position, and remove all titles matching a selected artist by using an iterator over song objects.
 
-**Acceptance criteria:** order remains stable; generics are used; empty and out-of-range behavior is explicit; removal does not skip adjacent matches or modify the list unsafely.
+```
 
-## Completion checklist
+**d.** Copy the list into a separate list. Remove the copy’s last element and print both lists.
 
-- [ ] I stored typed objects in a list and iterated over it.
-- [ ] I tested indexed access and empty-list behavior.
-- [ ] I removed matching values safely with an iterator.
-- [ ] I can justify when indexed access changes the `ArrayList` / `LinkedList` choice.
+```java
+
+
+```
+
+---
+
+### 2. Correct the errors
+
+**a.**
+
+```java
+// words is a List<String>.
+for (int i = 0; i <= words.length; i++) {
+    System.out.println(words[i]);
+}
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Inside a loop; word may be null.
+if (word.trim().isEmpty() || word == null) continue;
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+// Print the length after trimming.
+String word = " oak ";
+word.trim();
+System.out.println(word.length());
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Determine the output
+
+```java
+List<String> a = new ArrayList<>(Arrays.asList("red", "blue"));
+List<String> b = a;
+List<String> c = new ArrayList<>(a);
+b.set(0, "green");
+c.add("white");
+System.out.println(a);
+System.out.println(c);
+System.out.println(a == b);
+System.out.println(a == c);
+```
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 4. Complete the iterator loop
+
+Remove all empty strings, including adjacent ones.
+
+```java
+List<String> words = new ArrayList<>(Arrays.asList("", "", "oak", ""));
+Iterator<String> it = words.iterator();
+while (/* condition */) {
+    String word = /* next element */;
+    if (word.isEmpty()) {
+        // Remove through the iterator.
+    }
+}
+```
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 5. Write a normalization method
+
+Write `static String acceptedWord(String raw)`. Return null for null or whitespace-only input; otherwise return the trimmed word without changing its case. Test `null`, `" "`, `" Oak "`, and `"oak"`.
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 6. Compare list operations
+
+Fill in the time costs. Use amortized cost for ArrayList append.
+
+| Operation | ArrayList | LinkedList |
+| --- | --- | --- |
+| Read an arbitrary index | | |
+| Traverse using for-each | | |
+| Append at the end | | |
+
+Why can traversing LinkedList with repeated get(i) calls take O(n²)? Does copying a list also copy mutable objects stored inside it?
+
+**Answer**
+
+```text
+
+
+```

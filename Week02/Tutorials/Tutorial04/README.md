@@ -1,53 +1,173 @@
-# Week 2 · Tutorial 04 — Combine Collections and Debug the Contract
+# Week 02 · Tutorial 04
 
-**Source:** redesigned supplementary practice from the Week 2 roadmap; the individual Week 2 Notion page is blank.
+## Two pointers & sliding windows
 
-## Practical challenge
+**Read first:** [requirement.md](requirement.md)
 
-A registration import contains student IDs, including duplicates and blank values. Build a clean result that reports accepted IDs in first-seen order, their frequencies, and all duplicate IDs.
+---
 
-**Rules:** trim IDs; ignore `null` and blank strings; treat case as significant; do not mutate the input. Write the expected result for `A12, B07, A12, " ", null, B07` before coding.
+### 1. Write the statements
 
-## Implementation milestones
+**a.** Set left and right to the ends of a sorted integer array.
 
-1. Write the contract for accepted input and output order.
-2. Use a set for seen IDs, a map for frequencies, and a list for accepted IDs in first-seen order.
-3. Add tests for empty input, blank values, repeats, and IDs that differ only in case.
-4. Debug a deliberately incorrect version that inserts into `seen` before checking whether the ID was already present.
-5. Review iterator removal from Tutorial 01 and describe how you would safely remove invalid registrations from an `ArrayList`.
-6. State time and extra-space costs. Distinguish expected hash-operation cost from deterministic list traversal.
+```java
 
-## Concept discovery
 
-**Concept note (Chinese):** 一个需求可以同时需要不同结构：列表保存首次出现顺序，集合检测成员关系，映射累计次数。先写清楚“接受什么、忽略什么、输出顺序如何”，再选择结构。正确性测试检查可观察结果；复杂度分析解释输入扩大时工作的增长。不要因为 `HashMap` 的查找通常很快，就假设它的遍历顺序固定。
+```
 
-## Apply and verify
+**b.** Calculate the sum of the endpoint values as long without overflowing an intermediate int.
 
-Your tests should make these outcomes explicit:
+```java
 
-- Accepted first-seen IDs: `A12, B07`.
-- Frequencies: `A12: 2`, `B07: 2`.
-- Duplicate IDs: `A12, B07` in the order each first became a duplicate.
-- Blank and `null` values are absent from every output.
 
-Add an input-copy assertion or compare the list before and after. Explain what changes if output order is unspecified.
+```
 
-## Explain after coding
+**c.** Write a condition requiring two distinct indices. Which pointer moves when the sum is below target?
 
-1. Which collection owns each part of the contract?
-2. What bug did the insert-before-check order cause?
-3. Which inputs are needed to distinguish trimming from case folding?
-4. What assumptions underlie your complexity estimate?
+```java
 
-## Independent transfer
 
-Build a word summary that returns first-seen unique words, a count map, and the earliest word with frequency one. Keep whitespace normalization and case handling explicit.
+```
 
-**Acceptance criteria:** all outputs follow a written contract; empty and ignored values are handled; no input mutation; tests cover duplicate and normalization boundaries; complexity is stated.
+**d.** A window has width k and a new rightmost index i. Write the index leaving the window and update its long sum.
 
-## Completion checklist
+```java
 
-- [ ] I combined list, set, and map behavior to meet distinct requirements.
-- [ ] I found and fixed an ordering bug using a test.
-- [ ] I documented input normalization and output ordering.
-- [ ] I justified time and auxiliary space.
+
+```
+
+---
+
+### 2. Correct the errors
+
+**a.**
+
+```java
+// Require distinct indices.
+while (left <= right) { /* pair scan */ }
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Avoid intermediate integer overflow.
+long sum = (long) (sorted[left] + sorted[right]);
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+// The first window's sum is firstSum. All windows may be negative.
+long best = 0;
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**d.**
+
+```java
+// Reject k outside 1..values.length.
+if (k < 1 && k > values.length) {
+    throw new IllegalArgumentException("Invalid k");
+}
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Trace a pair search
+
+Array: `[-3, 0, 2, 5, 9]`. Target: 7. Start at opposite ends.
+
+| left | right | Sum | Next action |
+| --- | --- | --- | --- |
+| 0 | 4 | | |
+
+Continue until a match is found or the pointers meet. Compare `[3]` and `[3,3]` for target 6.
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 4. Trace the windows
+
+Array: `[2, -1, 4, 3]`. Window width: 2.
+
+| Window | Leaving value | Entering value | Sum | Best so far |
+| --- | --- | --- | --- | --- |
+| 0..1 | — | — | | |
+| 1..2 | | | | |
+| 2..3 | | | | |
+
+Repeat for `[-5,-2,-7]` with width 2.
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 5. Write a first-window method
+
+Write `static long firstWindowSum(int[] values, int k)` for a non-null array. Reject k outside 1..values.length with IllegalArgumentException; otherwise sum the first k values.
+
+Test k=1, k=values.length, k=0, and an empty array with k=1.
+
+**Solution**
+
+```java
+
+
+```
+
+---
+
+### 6. Explain and test the boundaries
+
+**a.** Give an unsorted array where the sorted two-pointer rule misses a pair.
+
+**b.** Why does the fixed-window update still work with negative values?
+
+**c.** State time and auxiliary space for a two-pointer pair scan and a fixed-window maximum scan.
+
+**d.** Give a two-element window whose sum exceeds Integer.MAX_VALUE and state its correct sum.
+
+**Answer**
+
+```text
+
+
+```

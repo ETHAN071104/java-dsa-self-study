@@ -1,59 +1,166 @@
-# Week 4 · Tutorial 04 — Test and Debug a Search Method
+# Week 04 · Tutorial 04
 
-**Source:** supplementary practice based on the 19-week roadmap; the individual Week 4 Notion page contains no lesson content.
+## Testing, debugging & Java review
 
-## Practical challenge
+**Read first:** [requirement.md](requirement.md)
 
-A binary-search implementation passes ordinary middle-value tests but fails on an empty array and may repeat an interval for an absent target. Turn the behavior contract into tests, then use a trace or debugger to locate the defect.
+---
 
-**Contract:** ascending input; return any valid matching index or `-1`; do not mutate the array.
+### 1. Write expected search behavior
 
-## Implementation milestones
+Search returns any matching index or -1, and must preserve the array.
 
-1. Write test cases before changing the method: empty, one-element hit/miss, first/last element, absent value, and duplicates.
-2. For each test, record input, target, expected behavior, and actual behavior.
-3. Trace `left`, `right`, and `mid` immediately before every array access. Identify the state that repeats or makes an invalid access.
-4. Fix the boundary or loop condition. Rerun the same tests and add a regression case for the defect.
-5. If JUnit 5 is already configured, express a few cases as tests with assertions using the [Lab 01 test starter](../../Labs/Lab01/BinarySearchTest.java). Otherwise keep the same cases as a manual test table; do not install dependencies for this tutorial.
+| Input | Target | Expected result / condition | Purpose |
+| --- | --- | --- | --- |
+| `[]` | 4 | | |
+| `[5]` | 5 | | |
+| `[5]` | 2 | | |
+| `[2,4,6]` | 2 | | |
+| `[2,4,6]` | 6 | | |
+| `[2,4,6]` | 3 | | |
+| `[1,3,3,7]` | 3 | | |
 
-## Concept discovery
+---
 
-**Concept note (Chinese):** 测试先验证公开行为，而不是依赖方法内部变量。边界测试能暴露空数组和单元素问题；重复区间的手动追踪能定位循环不收缩的原因。JUnit 测试通常包含准备输入、调用方法、断言结果三步。若运行环境没有 JUnit，手工测试表仍然能清楚记录预期和实际结果。
+### 2. Correct the tests
 
-The following fragment contains a boundary-update defect. Trace it before editing:
+Use JUnit 5 assertions or equivalent manual checks.
+
+**a.**
+
+```java
+// Any matching duplicate index is valid.
+assertEquals(1, BinarySearch.search(new int[]{1,3,3,7}, 3));
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**b.**
+
+```java
+// Check that search preserves input contents.
+int[] before = values;
+BinarySearch.search(values, 5);
+assertArrayEquals(before, values);
+```
+
+**Correction**
+
+```java
+
+
+```
+
+**c.**
+
+```java
+// Validate index before reading values[index].
+assertTrue(values[index] == target && index >= 0 && index < values.length);
+```
+
+**Correction**
+
+```java
+
+
+```
+
+---
+
+### 3. Trace a search bug
+
+Use `[1,2]`, target 2, and initial inclusive bounds left=0, right=1. Equality has already been handled.
 
 ```java
 if (values[mid] < target) {
     left = mid;
 } else {
-    right = mid;
+    right = mid - 1;
 }
 ```
 
-## Apply and verify
+Trace two iterations. Identify the repeated state, correct the update, and specify a regression test.
 
-- Keep the test for the original failure after fixing the code.
-- For duplicate values, assert the returned index is valid and points to the target; do not require the first index unless that is the contract.
-- Add a test that confirms the input is unchanged.
-- Review midpoint arithmetic for overflow when `left` and `right` are large nonnegative values; explain a safe expression.
-- Separate a compile-time error, runtime exception, and wrong-result logic bug using one example of each from your work.
+**Answer**
 
-## Explain after coding
+```text
 
-1. Which test exposed the defect first, and why?
-2. What loop invariant should remain true before every midpoint access?
-3. What evidence showed that the interval now shrinks?
-4. Which tests would you keep if the implementation later changed?
 
-## Independent transfer
+```
 
-Write tests for an insertion-sort method: empty, one item, sorted, reverse sorted, duplicates, and negative values. Use one trace to diagnose a failing pass, then preserve the test that caught it.
+---
 
-**Acceptance criteria:** tests match the public contract; a failing case becomes a regression test; array input is unchanged by search; JUnit is optional and no installation is required.
+### 4. Write behavior checks
 
-## Completion checklist
+**a.** Write a JUnit 5 test or manual check for search on `[2,4,6]`, target 6. Check the returned index and unchanged input. Include imports if using JUnit.
 
-- [ ] I wrote boundary tests from the method contract.
-- [ ] I used a trace or debugger to find a defect.
-- [ ] I preserved a regression case.
-- [ ] I can explain the role of JUnit assertions or a manual test table.
+```java
+
+
+```
+
+**b.** Write a check that insertionSort changes `[3,-1,3]` into the correct ascending array, preserving duplicate values.
+
+```java
+
+
+```
+
+---
+
+### 5. Practise lambdas and streams
+
+**a.** Write a descending integer comparator lambda. Use it to sort a copy of `[4,1,3]` without changing the original list.
+
+```java
+
+
+```
+
+**b.** Write a stream pipeline that selects positive integers from a List<Integer> and squares them. Assume squares fit in int. Collect into a new list.
+
+```java
+
+
+```
+
+**c.** Determine result and the final contents of words. Identify the intermediate and terminal operations.
+
+```java
+List<String> words = new ArrayList<>(Arrays.asList("bee", "a", "oak"));
+List<String> result = words.stream()
+    .filter(word -> word.length() >= 3)
+    .map(word -> word.toUpperCase())
+    .collect(Collectors.toList());
+```
+
+**Answer**
+
+```text
+
+
+```
+
+---
+
+### 6. Prepare a test plan
+
+**a.** Give inputs and expected outputs for insertion sort: empty, single, sorted, reverse sorted, negative, and duplicate values.
+
+**b.** Give depth and preorder expectations for null, a leaf, a balanced tree, and a one-sided tree.
+
+**c.** Classify: missing semicolon; reading values[-1]; returning -1 for an existing target; recursion that never reaches a base case.
+
+**d.** State time and auxiliary space for binary search, insertion sort, and recursive preorder.
+
+**Answer**
+
+```text
+
+
+```
