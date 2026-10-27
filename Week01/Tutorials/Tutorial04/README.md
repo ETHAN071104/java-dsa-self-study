@@ -2,6 +2,8 @@
 
 ## Arrays, strings & complexity
 
+**Read first:** [requirement.md](requirement.md)
+
 ---
 
 ### 1. Write the declarations and statements

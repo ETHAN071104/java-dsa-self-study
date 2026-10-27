@@ -2,6 +2,8 @@
 
 ## Equality, sets & maps
 
+**Read first:** [requirement.md](requirement.md)
+
 ---
 
 ### 1. Write the statements
